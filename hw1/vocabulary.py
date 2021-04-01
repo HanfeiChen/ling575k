@@ -52,11 +52,11 @@ class Vocabulary:
         # popoulate self.index_to_token with tokens from `frequencies`
         # make sure to check that max_size has not been reached
         # and only include tokens that occur more than min_freq times
-        num_tokens_to_include = max_size - len(special_tokens)
-        if num_tokens_to_include > 0:
-            for token, freq in frequencies.most_common(num_tokens_to_include):
-                if freq >= min_freq:
-                    self.index_to_token.append(token)
+        for token, freq in frequencies.items():
+            if len(self.index_to_token) >= max_size:
+                break
+            if freq >= min_freq:
+                self.index_to_token.append(token)
 
         if not special_first:
             self.index_to_token.extend(list(special_tokens))
