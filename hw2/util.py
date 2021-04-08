@@ -111,7 +111,7 @@ def get_args() -> argparse.Namespace:
     parser.add_argument(
         "--training_data",
         type=str,
-        default="../../data/sst/train-reviews.txt",
+        default="/dropbox/20-21/575k/data/sst/train-reviews.txt",
         help="Path to file containing raw text.",
     )
     parser.add_argument(

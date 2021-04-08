@@ -4,6 +4,7 @@ import time
 from typing import Any, Iterable
 
 import numpy as np
+from tqdm import trange
 
 import data
 import util
@@ -45,11 +46,12 @@ class SGNS:
                 context_word_embedding: 1-D numpy array; the context embedding c_w' for context word
                 probability: float, the probability P(+ | w, c)
         """
-        # TODO (~5 lines): implement this method, returning the relevant values in the dictionary below
+        # DONE (~5 lines): implement this method, returning the relevant values in the dictionary below
+        w, c = example
         return {
-            "target_word_embedding": None,
-            "context_word_embedding": None,
-            "probability": None,
+            "target_word_embedding": w,
+            "context_word_embedding": c,
+            "probability": sigmoid(np.dot(w, c)),
         }
 
 
@@ -67,7 +69,9 @@ def get_positive_context_gradient(
         the gradient, an array of shape [embedding_dim]
     """
     # TODO (~1-2 lines): implement
-    return None 
+    E_w = positive_result["target_word_embedding"]
+    C_pos = positive_result["context_word_embedding"]
+    return (np.dot(E_w, C_pos) - 1) * E_w
 
 
 def get_negative_context_gradients(
@@ -83,8 +87,13 @@ def get_negative_context_gradients(
     Return:
         the gradients, a list of arrays, each of shape [embedding_dim]
     """
-    # TODO (~2-4 lines): implement
-    return None
+    # DONE (~2-4 lines): implement
+    gradients = []
+    for res in negative_results:
+        E_w = res["target_word_embedding"]
+        C_neg_i = res["context_word_embedding"]
+        gradients.append(np.dot(E_w, C_neg_i) * E_w)
+    return gradients
 
 
 def get_target_word_gradient(
@@ -100,8 +109,14 @@ def get_target_word_gradient(
         the gradient, an array of shape [embedding_dim]
     """
     # TODO (~4-8 lines): implement
-    return None
-
+    E_w = positive_result["target_word_embedding"]
+    C_pos = positive_result["context_word_embedding"]
+    gradient = (np.dot(E_w, C_pos) - 1) * C_pos
+    for res in negative_results:
+        E_w = res["target_word_embedding"]
+        C_neg_i = res["context_word_embedding"]
+        gradient += np.dot(E_w, C_neg_i) * C_neg_i
+    return gradient
 
 if __name__ == "__main__":
 
@@ -137,7 +152,7 @@ if __name__ == "__main__":
     start_time = time.time()
 
     # main training loop
-    for epoch in range(args.num_epochs):
+    for epoch in trange(args.num_epochs):
 
         # shuffle the data indices
         random.shuffle(data_order)

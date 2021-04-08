@@ -17,8 +17,11 @@ def negative_samples(
     Returns:
         list of sampled tokens
     """
-    # TODO (~3-5 lines): implement this method
-    return None
+    # DONE (~3-5 lines): implement this method
+    avoided_weights = []
+    for token, weight in zip(tokens, weights):
+        avoided_weights.append(0. if token == avoid else weight)
+    return random.choices(tokens, avoided_weights, k=num_samples)
 
 
 def negatives_from_positive(
@@ -63,8 +66,16 @@ def get_positive_samples(
     Returns:
         a list of (target_word, context_word) tuples
     """
-    # TODO (~7-10 lines): implement this method
-    return None
+    # DONE (~7-10 lines): implement this method
+    samples = []
+    tokens_to_include = set(tokens)
+    for i in range(window_size, len(text) - window_size):
+        target = text[i]
+        if target in tokens_to_include:
+            for j in range(i-window_size, i+window_size+1):
+                if j != i and text[j] in tokens_to_include:
+                    samples.append((target, text[j]))
+    return samples
 
 
 def generate_training_data(

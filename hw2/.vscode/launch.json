@@ -1,0 +1,24 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python: word2vec",
+            "type": "python",
+            "request": "launch",
+            "program": "word2vec.py",
+            "console": "integratedTerminal",
+            "args": [
+                "--num_epochs=5",
+                "--save_vectors=toy-vectors.tsv",
+                "--embedding_dim=10",
+                "--learning_rate=0.2",
+                "--min_freq=1",
+                "--num_negatives=5",
+                "--training_data=/dropbox/20-21/575k/data/toy-reviews.txt"
+            ]
+        }
+    ]
+}
