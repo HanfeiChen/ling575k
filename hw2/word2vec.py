@@ -68,7 +68,7 @@ def get_positive_context_gradient(
     Return:
         the gradient, an array of shape [embedding_dim]
     """
-    # TODO (~1-2 lines): implement
+    # DONE (~1-2 lines): implement
     E_w = positive_result["target_word_embedding"]
     C_pos = positive_result["context_word_embedding"]
     return (np.dot(E_w, C_pos) - 1) * E_w
@@ -108,12 +108,11 @@ def get_target_word_gradient(
     Return:
         the gradient, an array of shape [embedding_dim]
     """
-    # TODO (~4-8 lines): implement
+    # DONE (~4-8 lines): implement
     E_w = positive_result["target_word_embedding"]
     C_pos = positive_result["context_word_embedding"]
     gradient = (np.dot(E_w, C_pos) - 1) * C_pos
     for res in negative_results:
-        E_w = res["target_word_embedding"]
         C_neg_i = res["context_word_embedding"]
         gradient += np.dot(E_w, C_neg_i) * C_neg_i
     return gradient
