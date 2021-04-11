@@ -18,10 +18,9 @@ def negative_samples(
         list of sampled tokens
     """
     # DONE (~3-5 lines): implement this method
-    avoided_weights = []
-    for token, weight in zip(tokens, weights):
-        avoided_weights.append(0. if token == avoid else weight)
-    return random.choices(tokens, avoided_weights, k=num_samples)
+    avoided_weights = [0. if token == avoid else weight
+                       for token, weight in zip(tokens, weights)]
+    return random.choices(tokens, weights=avoided_weights, k=num_samples)
 
 
 def negatives_from_positive(
