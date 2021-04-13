@@ -68,10 +68,10 @@ def get_positive_samples(
     # DONE (~7-10 lines): implement this method
     samples = []
     tokens_to_include = set(tokens)
-    for i in range(window_size, len(text) - window_size):
+    for i in range(len(text)):
         target = text[i]
         if target in tokens_to_include:
-            for j in range(i-window_size, i+window_size+1):
+            for j in range(max(0, i-window_size), min(len(text), i+window_size+1)):
                 if j != i and text[j] in tokens_to_include:
                     samples.append((target, text[j]))
     return samples
