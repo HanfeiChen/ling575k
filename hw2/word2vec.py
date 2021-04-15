@@ -4,11 +4,19 @@ import time
 from typing import Any, Iterable
 
 import numpy as np
-from tqdm import tqdm
 
 import data
 import util
 from vocabulary import Vocabulary
+
+
+### FOR DEBUGGING
+# import matplotlib.pyplot as plt
+
+# def plot_losses(epochs: Iterable[int], losses: Iterable[float]):
+#     plt.plot(epochs, losses)
+#     plt.savefig('losses')
+### FOR DEBUGGING
 
 
 # type hint for a model output
@@ -55,6 +63,17 @@ class SGNS:
             "context_word_embedding": context_embedding,
             "probability": sigmoid(np.dot(target_embedding, context_embedding)),
         }
+
+
+### FOR DEBUGGING
+# def get_loss(
+#     positive_result: Result, negative_results: Iterable[Result]
+# ) -> float:
+#     loss = - np.log(positive_result["probability"])
+#     for res in negative_results:
+#         loss += - np.log(1 - res["probability"])
+#     return loss
+### FOR DEBUGGING
 
 
 def get_positive_context_gradient(
@@ -143,14 +162,23 @@ if __name__ == "__main__":
 
     start_time = time.time()
 
+    ### FOR DEBUGGING
+    # epochs = []
+    # losses = []
+    ### FOR DEBUGGING
+
     # main training loop
     for epoch in range(args.num_epochs):
 
         # shuffle the data indices
         random.shuffle(data_order)
 
-        # for data_index in data_order:
-        for data_index in tqdm(data_order, desc=f'Epoch {epoch}', mininterval=5):
+        ### FOR DEBUGGING
+        # loss = 0
+        ### FOR DEBUGGING
+
+        for data_index in data_order:
+        # for data_index in tqdm(data_order, desc=f'Epoch {epoch}', mininterval=5):
 
             # get indices for positive example
             positive_example = positive_indices[data_index]
@@ -165,6 +193,10 @@ if __name__ == "__main__":
             negative_results = [
                 model.forward(negative_example) for negative_example in negatives
             ]
+
+            ### FOR DEBUGGING
+            # loss += get_loss(positive_result, negative_results)
+            ### FOR DEBUGGING
 
             # compute all gradients
             # dL / dc_+ for the positive context word
@@ -195,8 +227,18 @@ if __name__ == "__main__":
                     learning_rate * negative_context_gradients[negative_index]
                 )
 
+        ### FOR DEBUGGING
+        # loss /= len(positive_examples)
+        # epochs.append(epoch)
+        # losses.append(loss)
+        ### FOR DEBUGGING
+
     print(f"Total training time: {time.time() - start_time}")
 
     if args.save_vectors:
         final_vectors = model.embeddings + model.context_embeddings
         util.save_vectors(tokens, final_vectors, args.save_vectors)
+
+    ### FOR DEBUGGING
+    # plot_losses(epochs, losses)
+    ### FOR DEBUGGING
