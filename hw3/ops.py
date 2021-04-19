@@ -7,7 +7,7 @@ from edugrad.ops import Operation, tensor_op
 class sigmoid(Operation):
     @staticmethod
     def forward(ctx, a):
-        output = 1. / 1. - np.exp(-a)
+        output = 1. / (1. + np.exp(-a))
         ctx.append(output)
         return output
 

@@ -91,7 +91,7 @@ class Word2Vec(nn.Module):
         """
         target_words_embeddings = self.embeddings(target_one_hots)
         context_words_embeddings = self.context_embeddings(context_one_hots)
-        return dot_product_rows(target_words_embeddings, context_words_embeddings)
+        return ops.sigmoid(dot_product_rows(target_words_embeddings, context_words_embeddings))
 
 
 # by convention, all positive examples come first in a batch, then negatives
