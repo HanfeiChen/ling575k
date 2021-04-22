@@ -54,7 +54,7 @@ class exp(Operation):
     @staticmethod
     def backward(ctx, grad_output):
         # DONE: implement
-        return [grad_output * (1. / ctx[-1])]
+        return [grad_output * np.exp(ctx[-1])]
 
 
 def softmax_rows(logits: Tensor) -> Tensor:
