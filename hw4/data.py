@@ -33,12 +33,14 @@ class SSTClassificationDataset(Dataset):
 
     def example_to_tensors(self, index: int) -> dict[str, np.ndarray]:
         example = self.__getitem__(index)
-        # TODO (~3 lines): build the bag of words vector for one example, stored in the variable above, here!
+        # DONE (~3 lines): build the bag of words vector for one example, stored in the variable above, here!
         # Note: use the self.vocab Vocabulary object to get integer indices
         # bag_of_words should be a 1-D numpy array of shape [vocabulary_size]
         # element i of this vector should be how many times word i (where i is the index in the Vocabulary)
         # occurred in the example
-        bag_of_words = None
+        bag_of_words = np.zeros(len(self.vocab))
+        for word, count in example["vocab"].frequencies.items():
+            bag_of_words[self.vocab[word]] += count
         return {
             "review": bag_of_words,
             "label": SSTClassificationDataset.label_one_hots[example["label"]],
@@ -62,7 +64,7 @@ class SSTClassificationDataset(Dataset):
                 "review": review_lines[line].strip("\n").split(" "),
                 "label": int(label_lines[line].strip("\n")),
             }
-            for line in range(len(review_lines)) 
+            for line in range(len(review_lines))
         ]
         # initialize a vocabulary from the reviews, if none is given
         if not vocab:

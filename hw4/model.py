@@ -33,7 +33,11 @@ class DeepAveragingNetwork(nn.Module):
             [batch_size, num_classes] Tensor containing raw scores (logits) for
             each example in the batch
         """
-        # TODO (~6 lines): implement here!
+        # DONE (~6 lines): implement here!
         # HINT: get averages, using lengths, and then pass through feedforward layers
         # ops.relu and ops.divide are your friends
-        return None
+        embedding_vectors = self.embeddings(bag_of_words)
+        x = ops.divide(ops.sum_along_columns(embedding_vectors), lengths)
+        x = ops.relu(self.hidden1(x))
+        x = ops.relu(self.hidden2(x))
+        return self.output(x)
