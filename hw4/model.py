@@ -37,7 +37,7 @@ class DeepAveragingNetwork(nn.Module):
         # HINT: get averages, using lengths, and then pass through feedforward layers
         # ops.relu and ops.divide are your friends
         embedding_vectors = self.embeddings(bag_of_words)
-        x = ops.divide(ops.sum_along_columns(embedding_vectors), lengths)
+        x = ops.divide(embedding_vectors, lengths)
         x = ops.relu(self.hidden1(x))
         x = ops.relu(self.hidden2(x))
         return self.output(x)

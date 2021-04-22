@@ -20,7 +20,7 @@ class Adagrad(Optimizer):
             # increment squared gradient history; param.grad contains the gradient
             # get adjusted learning rate
             # update parameters
-            param._grad_hist += np.square(param)
+            param._grad_hist += np.square(param.value)
             adjusted_lr = self.lr / (np.sqrt(param._grad_hist) + self._eps)
             param.value -= adjusted_lr * param.grad
         self._cur_step += 1

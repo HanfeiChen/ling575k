@@ -1,4 +1,4 @@
-from typing import Any, Callable
+from typing import Any, Callable, Counter
 
 import numpy as np
 from vocabulary import Vocabulary
@@ -39,7 +39,7 @@ class SSTClassificationDataset(Dataset):
         # element i of this vector should be how many times word i (where i is the index in the Vocabulary)
         # occurred in the example
         bag_of_words = np.zeros(len(self.vocab))
-        for word, count in example["vocab"].frequencies.items():
+        for word, count in Counter(example["review"]).items():
             bag_of_words[self.vocab[word]] += count
         return {
             "review": bag_of_words,
