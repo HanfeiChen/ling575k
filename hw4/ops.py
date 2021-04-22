@@ -47,14 +47,14 @@ class exp(Operation):
 
     @staticmethod
     def forward(ctx, a):
-        # TODO: implement
-        # use ctx to store any information you need in backward
-        return None
+        # DONE: implement
+        ctx.append(a)
+        return np.exp(a)
 
     @staticmethod
     def backward(ctx, grad_output):
-        # TODO: implement
-        return [None]
+        # DONE: implement
+        return [grad_output * (1. / ctx[-1])]
 
 
 def softmax_rows(logits: Tensor) -> Tensor:
@@ -67,9 +67,10 @@ def softmax_rows(logits: Tensor) -> Tensor:
     Returns: [batch_size, num_classes] Tensor
         row-wise softmax of logits, i.e. each row will be a probability distribution.
     """
-    # TODO (~3 lines): implement here
+    # DONE (~3 lines): implement here
     # HINT: sum_along_columns is a friend
-    return None
+    exp_logits = exp(logits)
+    return divide(exp_logits, sum_along_columns(exp_logits))
 
 
 def cross_entropy_loss(probabilities: Tensor, labels: Tensor) -> Tensor:
@@ -84,9 +85,10 @@ def cross_entropy_loss(probabilities: Tensor, labels: Tensor) -> Tensor:
         1 / batch_size * sum_row cross_entropy(labels[row], probabilities[row])
         where cross_entropy(p, q) = - sum(p[i] * log(q[i]))
     """
-    # TODO (~5 lines): implement
+    # DONE (~5 lines): implement
     # you can use items available from hw3_ops, ones defined above, as well as reduce_mean,
     # which has been imported from edugrad
     # helper scalar
     negative_one = Tensor(np.array(-1.0))
-    return None
+    neg_ce_per_row = sum_along_columns(multiply(labels, log(probabilities)))
+    return multiply(negative_one, reduce_mean(neg_ce_per_row))

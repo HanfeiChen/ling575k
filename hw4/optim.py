@@ -16,9 +16,11 @@ class Adagrad(Optimizer):
 
     def step(self):
         for param in self.params:
-            # TODO: implement here
+            # DONE: implement here
             # increment squared gradient history; param.grad contains the gradient
             # get adjusted learning rate
             # update parameters
-            continue  # delete this line once you've implemented
+            param._grad_hist += np.square(param)
+            adjusted_lr = self.lr / (np.sqrt(param._grad_hist) + self._eps)
+            param.value -= adjusted_lr * param.grad
         self._cur_step += 1
