@@ -18,7 +18,7 @@ class Dataset:
     def batch_as_tensors(self, start: int, end: int) -> dict[str, np.ndarray]:
         raise NotImplementedError
 
-    def __getitem__(self, idx: int) -> dict:
+    def __getitem__(self, idx: int) -> Example:
         return self.examples[idx]
 
     def __len__(self) -> int:
