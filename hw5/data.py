@@ -37,7 +37,7 @@ def examples_from_characters(chars: list[str], num_prev_chars: int) -> list[Exam
 
     An example usage:
         >>> examples_from_characters(['a', 'b', 'c', 'd'], 2)
-        >>> [{"text": ['a', 'b'], "target": ['c']}, {"text": ['b', 'c'], "target": ['d']}, {"text": ['b', 'c'], "target": ['d']}]
+        >>> [{"text": ['a', 'b'], "target": ['c']}, {"text": ['b', 'c'], "target": ['d']}]
 
     Arguments:
         chars: list of characters
