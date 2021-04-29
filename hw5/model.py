@@ -48,4 +48,5 @@ class FeedForwardLanguageModel(nn.Module):
         embeddings = [self.embedding(indices) for indices in word_indices]
         x = ops.concat(*embeddings)  # [batch_size, n * embedding_dim]
         x = self.fc(x)
+        x = ops.tanh(x)
         return self.output(x)
