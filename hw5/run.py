@@ -25,9 +25,10 @@ def sample_next_char(probabilities: np.ndarray) -> np.ndarray:
     Returns:
         [batch_size] array of integer indices, corresponding to the samples
     """
-    # TODO: (~2-3 lines) implement this method
+    # DONE: (~2-3 lines) implement this method
     # Hint: np.random.choice is helpful
-    return None
+    vocab_size = probabilities.shape[1]
+    return [np.random.choice(vocab_size, p=dist) for dist in probabilities]
 
 
 def generate(

@@ -39,10 +39,13 @@ class FeedForwardLanguageModel(nn.Module):
             containing logits (not full probabilities, i.e. pre-softmax)
             over the vocab for each example in the batch
         """
-        # TODO: (~7 lines) implement the forward pass of FFNN LM here
+        # DONE: (~7 lines) implement the forward pass of FFNN LM here
         # HINT: use ops.concat to concatenate word embeddings together
         # It takes a variable-length list of Tensors as its input, so you can
         # call it using as ops.concat(*embeddings), where embeddings is a list
         # of Tensors, corresponding to the relevant embeddings
         # [batch_size, num_words * embedding_size]
-        return None 
+        embeddings = [self.embedding(indices) for indices in word_indices]
+        x = ops.concat(*embeddings)  # [batch_size, n * embedding_dim]
+        x = self.fc(x)
+        return self.output(x)

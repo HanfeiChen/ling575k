@@ -46,8 +46,12 @@ def examples_from_characters(chars: list[str], num_prev_chars: int) -> list[Exam
     Returns:
         list of Example dictionaries, as described above
     """
-    # TODO: (~6-7 lines) implement here :)
-    return None
+    # DONE: (~6-7 lines) implement here :)
+    examples = []
+    first_target_index = num_prev_chars
+    for i in range(first_target_index, len(chars)):
+        examples.append({"text": chars[i - num_prev_chars:i], "target": [chars[i]]})
+    return examples
 
 
 class SSTLanguageModelingDataset(Dataset):

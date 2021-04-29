@@ -37,10 +37,14 @@ class tanh(Operation):
     """
     @staticmethod
     def forward(ctx, a):
-        # TODO: implement
-        return None
+        # DONE: implement
+        pos_exp = np.exp(a)
+        neg_exp = np.exp(-a)
+        out = (pos_exp - neg_exp) / (pos_exp + neg_exp)
+        ctx.append(out)
+        return out
 
     @staticmethod
     def backward(ctx, grad_output):
-        # TODO: implement
-        return [None]
+        # DONE: implement
+        return [grad_output * (1 - ctx[-1] * ctx[-1])]
