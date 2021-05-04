@@ -37,7 +37,7 @@ def examples_from_characters(chars: list[str], num_prev_chars: int) -> list[Exam
 
     An example usage:
         >>> examples_from_characters(['a', 'b', 'c', 'd'], 2)
-        >>> [{"text": ['a', 'b'], "target": ['c']}, {"text": ['b', 'c'], "target": ['d']}]
+        >>> [{"text": ['a', 'b'], "target": 'c'}, {"text": ['b', 'c'], "target": 'd'}]
 
     Arguments:
         chars: list of characters
@@ -50,7 +50,7 @@ def examples_from_characters(chars: list[str], num_prev_chars: int) -> list[Exam
     examples = []
     first_target_index = num_prev_chars
     for i in range(first_target_index, len(chars)):
-        examples.append({"text": chars[i - num_prev_chars:i], "target": [chars[i]]})
+        examples.append({"text": chars[i - num_prev_chars:i], "target": chars[i]})
     return examples
 
 
