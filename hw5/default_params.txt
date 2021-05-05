@@ -1,0 +1,20 @@
+Epoch 0 avg train loss: 2.0250139082590444
+Epoch 1 avg train loss: 1.86026890501265
+Epoch 2 avg train loss: 1.808859211847619
+Epoch 3 avg train loss: 1.7781803305925301
+["it 's the popt and fast of a move to into and funn", 'the movie the film .</s>st depera to resting .</s>n whil', 'the make come a perpect .</s> its in a story .</s>lition', 'a film .</s> is beal a bit the film about the story o', 'a not a sump is a movie that well to the care than', 'in the and with a seep of an and a comedy , the st', 'the deal enter some and whing that the make for th', 'the movie is of the comper and do be should perfor', 'a store .</s>lite a stunning .</s>st melong of the chara', "a film a seasing and preting the film the film 's "]
+Epoch 4 avg train loss: 1.7567521082691067
+Epoch 5 avg train loss: 1.7406483325021471
+Epoch 6 avg train loss: 1.7279459023983335
+Epoch 7 avg train loss: 1.7174026475999737
+['a completent and bearacter and and a bet most with', 'a complected makes a movie of the work is one with', 'the film with its be a for the screen to lare the ', 'a merical surst the story and no seever , enfectio', "the most is a compece of the film 's and the end t", "it 's a has a like a seems all the poters and dema", "the film 's some the screen or a story in the perf", "it 's the film of a stories .</s>mant and disting and", 'the story is a complece that steats and story and ', 'the movie and in the story interest down the proms']
+Epoch 8 avg train loss: 1.7085497082138092
+Epoch 9 avg train loss: 1.7009685154894165
+Epoch 10 avg train loss: 1.6943374015480863
+Epoch 11 avg train loss: 1.6884849458163818
+["a pretention .</s>lity that is the prome .</s> how it 's", 'this a blas a better in its and to real the film i', 'a farment of a lide in the film a home the of in t', "a movie that is a prese of a stains of the film 's", 'a movie and a mensere .</s>no .</s> the movie and deal o', 'a compless .</s>lites a deally has proper to see the ', "the film 's has a mentive and the prome , the film", 'a see this is better than movie is so come .</s> be a', "it 's movie is a warks a servel , and the sunger t", "the film 's realling , and player .</s>stic dore that"]
+Epoch 12 avg train loss: 1.6831965980817598
+Epoch 13 avg train loss: 1.6785176853387047
+Epoch 14 avg train loss: 1.6742240815925493
+Epoch 15 avg train loss: 1.6702851821783233
+["an and a have it 's contrance and the strong the p", 'the film is a see the dick of the gric as a story ', "the film 's deep been to with the story of the who", "a hard the blood is the movie , but the you 're in", 'whim characters .</s>litic and constranging .</s>ngle fo', 'the story .</s>lith the film does and camply that nea', 'a little to be could in its and a contring of an a', 'an about the performances visual seen come of sump', 'a movie is a freat of its and many .</s>litic too com', "a performances .</s>lite that it 's a film is a movie"]

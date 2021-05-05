@@ -28,7 +28,7 @@ def sample_next_char(probabilities: np.ndarray) -> np.ndarray:
     # DONE: (~2-3 lines) implement this method
     # Hint: np.random.choice is helpful
     vocab_size = probabilities.shape[1]
-    return [np.random.choice(vocab_size, p=dist) for dist in probabilities]
+    return np.array([np.random.choice(vocab_size, p=dist) for dist in probabilities])
 
 
 def generate(

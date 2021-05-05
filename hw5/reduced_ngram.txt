@@ -1,0 +1,20 @@
+Epoch 0 avg train loss: 1.989534034570584
+Epoch 1 avg train loss: 1.8444338753212683
+Epoch 2 avg train loss: 1.7994803524889467
+Epoch 3 avg train loss: 1.7726559627040994
+['the film the screen .</s> is a faing the film the fil', 'the film of the film that in the prode to self and', 'a surprising .</s> a something and seen the pose for ', 'the mark , such of spection .</s> that is the strie .', "it 's all the screentione that in the screen and a", "it 's dest and staction .</s> is a coment as it the w", "it 's a dark , but it 's bellay the sently ond has", 'an and in movie and movie fously pation and .</s> som', 'a farthing .</s> all were the prove in the film is th', 'the movie of conse for and film .</s> the preat as a ']
+Epoch 4 avg train loss: 1.7538968904232177
+Epoch 5 avg train loss: 1.7395555432579797
+Epoch 6 avg train loss: 1.728179352343071
+Epoch 7 avg train loss: 1.7187226667495419
+["it 's a too be looks to be the has one of a movie ", 'the film the film does and more the movie of the c', 'the story .</s> a compone , and the delige .</s> the par', 'the stare that is so expect and movie .</s> the perfo', 'the film , and the movie in the film is a mare the', 'a gening and the could of the story that it was ov', 'in its interesting .</s> the movie is a film the beat', 'a comedy , and some .</s> a comedy .</s> and the story t', "it 's creature and polition the screen .</s> a compin", "stare .</s> a searting of a some film of the film 's "]
+Epoch 8 avg train loss: 1.710778046639277
+Epoch 9 avg train loss: 1.7039010614402799
+Epoch 10 avg train loss: 1.6978905053366657
+Epoch 11 avg train loss: 1.6926653900242397
+['the film a real and givers .</s> and such , but from ', 'a man a film that is a film the seal is a but the ', "a film a complication of the it 's subwith in the ", 'the film has makes the film , the film a story tha', 'a comedy .</s> all ever to a comedy comedy , and the ', 'an hour and of the sean and the same and collen , ', "what 's steresting and the film .</s> patter that mig", 'a film a film .</s> should and a should be some , and', 'the spectable , the stire .</s> all the made .</s> speci', "it 's a string something as it the story , and sup"]
+Epoch 12 avg train loss: 1.6878708799846107
+Epoch 13 avg train loss: 1.6835710542185887
+Epoch 14 avg train loss: 1.6797020213652483
+Epoch 15 avg train loss: 1.6760700235474872
+['the romant does for the movie is a stain .</s> man it', "it 's a come to be an and masting .</s> in with the f", 'scenes , in the proble on the labort the film ente', 'the stare is the film is of the movie part , and m', 'the movie has in the propo the movie is good and w', 'a movie is a string .</s> the film diserting and some', "a complice that it 's make the movie is a surce th", 'the film is a mark and the movie , and in the char', 'while it is of the film that is of the movie of th', 'the movie is a comedy .</s> and of the kind the scree']
