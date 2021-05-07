@@ -45,8 +45,13 @@ def pad_batch(sequences: list[np.ndarray], padding_index: int) -> np.ndarray:
         sequence from the sequences argument, but padded out to the maximum length with
         padding_index
     """
-    # TODO: implement here! ~6-7 lines
-    return None 
+    # DONE: implement here! ~6-7 lines
+    max_seq_len = max(seq.shape[0] for seq in sequences)
+    padded_sequences = []
+    for seq in sequences:
+        padded_seq = np.pad(seq, (0, max_seq_len - seq.shape[0]), constant_values=padding_index)
+        padded_sequences.append(padded_seq)
+    return padded_sequences
 
 
 class SSTClassificationDataset(Dataset):

@@ -24,9 +24,11 @@ class VanillaRNNCell(nn.Module):
             [batch_size, hidden_dim] Tensor
             this corresponds to h_t in the eqn above
         """
-        # TODO: implement forward pass here! ~3-4 lines
+        # DONE: implement forward pass here! ~3-4 lines
         # Note: torch.tanh() will apply tanh element-wise
-        return None
+        prev_hidden_projected = self.hidden2hidden(prev_hidden)
+        cur_input_projected = self.input2hidden(cur_input)
+        return torch.tanh(prev_hidden_projected + cur_input_projected)
 
 
 class VanillaRNN(nn.Module):
@@ -110,11 +112,17 @@ class LSTMCell(nn.Module):
         # each row corresponds to that vector for one example in the batch
         # [batch_size, hidden_dim + embeding_dim]
         combined_input = torch.cat((prev_hidden, cur_input), dim=1)
-        # TODO: implement LSTM cell computation here.  ~6-7 lines
+        # DONE: implement LSTM cell computation here.  ~6-7 lines
         # Note: torch.sigmoid() will apply sigmoid element-wise
         # If x and y are two torch.Tensors of the same shape, x*y will do
         # element-wise multiplication, and x+y addition
-        return None, None
+        f_t = torch.sigmoid(self.forget_linear(combined_input))
+        i_t = torch.sigmoid(self.input_linear(combined_input))
+        c_t_hat = torch.tanh(self.candidate_linear(combined_input))
+        c_t = f_t * prev_memory + i_t * c_t_hat
+        o_t = torch.sigmoid(self.output_linear(combined_input))
+        h_t = o_t * torch.tanh(c_t)
+        return h_t, c_t
 
 
 class LSTM(nn.Module):
