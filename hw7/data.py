@@ -60,8 +60,8 @@ class SSTLanguageModelingDataset(Dataset):
     def example_to_indices(self, index: int) -> dict[str, Any]:
         example = self.__getitem__(index)
         return {
-            "text": self.vocab.tokens_to_indices(example["text"]),
-            "target": self.vocab.tokens_to_indices(example["target"]),
+            "text": np.array(self.vocab.tokens_to_indices(example["text"])),
+            "target": np.array(self.vocab.tokens_to_indices(example["target"])),
             "length": example["length"],
         }
 
