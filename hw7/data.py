@@ -45,8 +45,10 @@ def example_from_characters(characters: list[str], bos: str, eos: str) -> Exampl
         an Example dictionary, as given in the example above, with three fields:
         text, target, and length
     """
-    # TODO: implement here (~2-3 lines)
-    return None
+    # DONE: implement here (~2-3 lines)
+    text = [bos] + characters
+    target = characters + [eos]
+    return {'text': text, 'target': target, 'length': len(text)}
 
 
 class SSTLanguageModelingDataset(Dataset):

@@ -27,8 +27,8 @@ def get_mask(characters: np.ndarray, padding_index: int) -> np.ndarray:
     Returns:
         [batch_size, max_seq_len] numpy array, as specified above
     """
-    # TODO: implement here (~1-2 lines)
-    return None
+    # DONE: implement here (~1-2 lines)
+    return 1 * np.not_equal(characters, padding_index)
 
 
 def mask_loss(loss: Tensor, target: np.ndarray, padding_index: int) -> Tensor:
@@ -47,7 +47,7 @@ def mask_loss(loss: Tensor, target: np.ndarray, padding_index: int) -> Tensor:
     Arguments:
         loss: [batch_size, max_seq_len] Tensor
             -log P(c_i | c_<i) for each character in each of a batch of sequences
-        target: [batch_size, max_seq_len] numpy array 
+        target: [batch_size, max_seq_len] numpy array
             the (padded) target character indices for the batch of sequences
         padding_index: the integer index of the padding token
             this is the index which should be masked out
@@ -56,9 +56,11 @@ def mask_loss(loss: Tensor, target: np.ndarray, padding_index: int) -> Tensor:
         Tensor of shape (), i.e. one float
         Containing the mean of loss, after masking out the losses corresponding to padding_index
     """
-    # TODO: implement here! (~4-5 lines)
+    # DONE: implement here! (~4-5 lines)
     # Hint: use get_mask first; t.sum() on a torch Tensor t will return the sum of its elements
-    return None
+    mask = get_mask(target, padding_index=padding_index)
+    masked_loss = torch.tensor(mask) * loss
+    return masked_loss.sum() / mask.sum()
 
 
 def generate(
