@@ -277,7 +277,7 @@ class Seq2SeqModel(nn.Module):
         # (batch_size, target_sequence_length, source_sequence_length)
         weights = torch.bmm(q, torch.transpose(k, 1, 2))
         if padding_mask:
-            weights = weights * padding_mask
+            weights = weights + padding_mask
         weights = F.softmax(weights, dim=-1)
 
         # (batch_size, target_sequence_length, source_sequence_length)
