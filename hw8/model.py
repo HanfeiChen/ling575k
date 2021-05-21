@@ -1,6 +1,7 @@
 import torch
 import numpy as np
 import torch.nn as nn
+import torch.nn.functional as F
 
 from torch import Tensor
 from vocabulary import Vocabulary
@@ -52,7 +53,7 @@ class Seq2SeqModel(nn.Module):
 
         Arguments:
             source: the source sequence. `(1, seq_length)`
-            source_lengths: the list of lengths of the source sequences 
+            source_lengths: the list of lengths of the source sequences
             bos_index: the index of the BOS token
             eos_index: the index of the EOS token
             vocab: the Vocabulary of the model
@@ -112,15 +113,22 @@ class Seq2SeqModel(nn.Module):
             the decoded (and unpacked) output of the decoder.
                 `(batch_size, target_sequence_length, vocab_size)`
         """
-        # TODO: Implement forward() using the signature, docstring, and comments as guide
-        
+        # DONE: Implement forward() using the signature, docstring, and comments as guide
+
         # Embed the source and target sequences
         # (batch_size, sequence_length, embedding_dim)
-        
+        source_embeddings = self.embedding(source)
+        target_embeddings = self.embedding(target)
+
         # Apply dropout to the source and target embeddings if using non-zero dropout
-        
+        if self.dropout_prob:
+            source_embeddings = self.dropout(source_embeddings)
+            target_embeddings = self.dropout(target_embeddings)
+
         # Get the encodings and final hidden representations from the encoder
-        
+        source_lengths, target_lengths = lengths
+        encoder_output, (h, c) = self.encode(source_embeddings, source_lengths)
+
         # Freebie: you'll need these lines to get the attention padding mask
         source_padding_mask = self.get_padding_mask(
             batch_size=source.size(0),
@@ -128,10 +136,16 @@ class Seq2SeqModel(nn.Module):
             key_lengths=source_lengths
         )
         source_padding_mask = source_padding_mask.type(self.embedding.weight.dtype)
-        
+
         # Get the decoder output and return (can discard the hidden and cell state)
         # (batch_size, target_sequence_length, vocab_size)
-        return None
+        decoder_output, _ = self.decode((h, c),
+                                        target_embeddings,
+                                        target_lengths,
+                                        encoder_output,
+                                        source_padding_mask)
+
+        return decoder_output
 
     def encode(
         self, source_embeddings: Tensor, source_lengths: list[int]
@@ -147,23 +161,28 @@ class Seq2SeqModel(nn.Module):
         Returns:
             encoder_output: the output of the encoder (unpacked).
                 `(batch_size, source_sequence_length, hidden_dim)`
-            (h, c): the tuple of the final hidden state and cell state from the encoder (per 
+            (h, c): the tuple of the final hidden state and cell state from the encoder (per
                 sequence in the batch). `((batch_size, hidden_dim), (batch_size, hidden_dim))`
         """
-        # TODO: Implement encode() using the signature, docstring, and comments as guide
+        # DONE: Implement encode() using the signature, docstring, and comments as guide
         # Hint: familiarize yourself with nn.utils.rnn.pack_padded_sequence and
         # nn.utils.rnn.pad_packed_sequence
-        
+
         # Pack the source sequences
-                
+        source_packed = nn.utils.rnn.pack_padded_sequence(source_embeddings,
+                                                          source_lengths,
+                                                          batch_first=True)
+
         # Get packed output and (h,c) from encoder
         # Hint: be sure of the return signature for torch.nn.LSTM
-                
+        encoder_output, (h, c) = self.encoder(source_packed)
+
         # Unpack the encoder output
         # (batch_size, source_sequence_length, hidden_dim)
-                
-        # Return the encoder output and tuple of hidden and cell statess
-        return None, (None, None)
+        encoder_output = nn.utils.rnn.pad_packed_sequence(encoder_output, batch_first=True)
+
+        # Return the encoder output and tuple of hidden and cell states
+        return encoder_output, (h, c)
 
     def decode(
         self,
@@ -192,29 +211,39 @@ class Seq2SeqModel(nn.Module):
         Returns:
             output: the batch of decoded output logits.
                 `(batch_size, target_sequence_length, vocab_size)`
-            (h, c): the tuple of the final hidden state and cell state from the decoder (per 
+            (h, c): the tuple of the final hidden state and cell state from the decoder (per
                 sequence in the batch). `((batch_size, hidden_dim), (batch_size, hidden_dim))`
         """
-        # TODO: Implement decode() using the signature, docstring, and comments as guide
-        
+        # DONE: Implement decode() using the signature, docstring, and comments as guide
+
         # Pack the target sequences
-                
+        target_packed = nn.utils.rnn.pack_padded_sequence(target_embeddings,
+                                                          target_lengths,
+                                                          batch_first=True)
+
         # Get packed output and (h,c) from the decoder
-                
+        decoder_output, (h, c) = self.decoder(target_packed, inits)
+
         # Unpack the decoder output
         # (batch_size, target_sequence_length, hidden_dim)
-                
+        decoder_output = nn.utils.rnn.pad_packed_sequence(decoder_output, batch_first=True)
+
         # Get the attention values for each decoder position
         # (batch_size, target_sequence_length, hidden_dim)
         # Then concatenate these values with the output from the decoder
         # (batch_size, target_sequence_length, 2 * hidden_dim)
-                
+        attention = self.attention(decoder_output, encoder_states, padding_mask=padding_mask)
+        output_with_attention = torch.cat([decoder_output, attention], dim=-1)
+
         # Apply dropout to the concatenated vectors if using non-zero dropout
-                
+        if self.dropout_prob:
+            output_with_attention = self.dropout(output_with_attention)
+
         # Apply the output layer to get logits
         # (batch_size, target_sequence_length, vocab_size)
-                
-        return None (None, None)
+        logits = self.output(output_with_attention)
+
+        return logits, (h, c)
 
     def attention(
         self, decoder_states: Tensor, encoder_states: Tensor, padding_mask: Tensor = None
@@ -236,13 +265,24 @@ class Seq2SeqModel(nn.Module):
             a linear combination of Values, weighted by attention score.
                 `(batch_size, target_sequence_length, hidden_dim)`
         """
-        # TODO: Implement attention() using the signature, docstring, and comments as guide
+        # DONE: Implement attention() using the signature, docstring, and comments as guide
         # Return a linear combination of Values per Query, as weighted by attention with the Keys
         # Hint: this can all be accomplished using transpose, matmul, addition, and softmax
         # Hint: add the padding mask before applying softmax
         # Hint: use torch.nn.functional.softmax and pay attention (no pun intended) to the dimension
         # over which it is applied
-        return None
+
+        q, k, v = decoder_states, encoder_states, encoder_states
+
+        # (batch_size, target_sequence_length, source_sequence_length)
+        weights = torch.bmm(q, torch.transpose(k, 1, 2))
+        if padding_mask:
+            weights = weights * padding_mask
+        weights = F.softmax(weights, dim=-1)
+
+        # (batch_size, target_sequence_length, source_sequence_length)
+        attention = torch.bmm(weights, v)
+        return attention
 
     @staticmethod
     def get_padding_mask(
