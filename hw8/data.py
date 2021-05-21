@@ -39,12 +39,27 @@ def example_from_characters(source: list[str], target: list[str], bos: str, eos:
 
 
 class Seq2SeqDataset(Dataset):
+    """
+    A dataset for training seq2seq models.
+
+    See `Seq2SeqDataset.from_files` for how to initialize a Seq2SeqDataset.
+    """
 
     BOS = "<s>"
     EOS = "</s>"
     PAD = "<PAD>"
 
     def example_to_indices(self, index: int) -> dict[str, Any]:
+        """
+        Convert the example at a given index into indices.
+
+        Arguments:
+            index: the index of the example to return.
+
+        Returns:
+            a dictionary representing the example at that index, with tokens
+                converted into indices.
+        """
         example = self.__getitem__(index)
         return {
             'source': np.array(self.vocab.tokens_to_indices(example['source'])),
@@ -54,6 +69,21 @@ class Seq2SeqDataset(Dataset):
         }
 
     def batch_as_tensors(self, start: int, end: int) -> dict[str, Any]:
+        """
+        Convert a batch of examples in the index range [start, end] to a
+        dictionary of tensors.
+
+        Arguments:
+            start: the starting index of the range examples
+            end: the ending index of the range of examples
+
+        Returns:
+            a dictionary representing the batch of examples. the `source`,
+                `target_x`, `target_y` fields will be the padded batches of the
+                examples' corresponding fields. the `lengths` field will be a
+                tuple of two ints in the form
+                `(source_lengths, target_lengths)`.
+        """
         examples = [self.example_to_indices(index) for index in range(start, end)]
         padding_index = self.vocab[Seq2SeqDataset.PAD]
         # pad texts to [batch_size, max_seq_len] array
@@ -72,6 +102,20 @@ class Seq2SeqDataset(Dataset):
 
     @classmethod
     def from_files(cls, source_file: str, target_file: str, vocab: Vocabulary = None):
+        """
+        Load a Seq2SeqDataset from a file.
+
+        Arguments:
+            source_file: path to the file with the source sentences.
+            target_file: path to the file with the target sentences.
+            vocab: the vocabulary to use for this dataset. If `vocab` is None,
+                then a new vocabulary will be constructed using the source and
+                target files.
+
+        Returns:
+            a Seq2SeqDataset with lines in `source_file` as the source sentences
+                and lines in `target_file` as the target sentences.
+        """
         examples = []
         counter: Counter = Counter()
         source_lines = [line.strip('\n').lower() for line in open(source_file, 'r')]

@@ -171,7 +171,8 @@ class Seq2SeqModel(nn.Module):
         # Pack the source sequences
         source_packed = nn.utils.rnn.pack_padded_sequence(source_embeddings,
                                                           source_lengths,
-                                                          batch_first=True)
+                                                          batch_first=True,
+                                                          enforce_sorted=False)
 
         # Get packed output and (h,c) from encoder
         # Hint: be sure of the return signature for torch.nn.LSTM
@@ -179,7 +180,7 @@ class Seq2SeqModel(nn.Module):
 
         # Unpack the encoder output
         # (batch_size, source_sequence_length, hidden_dim)
-        encoder_output = nn.utils.rnn.pad_packed_sequence(encoder_output, batch_first=True)
+        encoder_output, _ = nn.utils.rnn.pad_packed_sequence(encoder_output, batch_first=True)
 
         # Return the encoder output and tuple of hidden and cell states
         return encoder_output, (h, c)
@@ -219,14 +220,15 @@ class Seq2SeqModel(nn.Module):
         # Pack the target sequences
         target_packed = nn.utils.rnn.pack_padded_sequence(target_embeddings,
                                                           target_lengths,
-                                                          batch_first=True)
+                                                          batch_first=True,
+                                                          enforce_sorted=False)
 
         # Get packed output and (h,c) from the decoder
         decoder_output, (h, c) = self.decoder(target_packed, inits)
 
         # Unpack the decoder output
         # (batch_size, target_sequence_length, hidden_dim)
-        decoder_output = nn.utils.rnn.pad_packed_sequence(decoder_output, batch_first=True)
+        decoder_output, _ = nn.utils.rnn.pad_packed_sequence(decoder_output, batch_first=True)
 
         # Get the attention values for each decoder position
         # (batch_size, target_sequence_length, hidden_dim)
@@ -273,10 +275,11 @@ class Seq2SeqModel(nn.Module):
         # over which it is applied
 
         q, k, v = decoder_states, encoder_states, encoder_states
+        # print(q, k, v)
 
         # (batch_size, target_sequence_length, source_sequence_length)
         weights = torch.bmm(q, torch.transpose(k, 1, 2))
-        if padding_mask:
+        if padding_mask is not None:
             weights = weights + padding_mask
         weights = F.softmax(weights, dim=-1)
 
