@@ -162,7 +162,7 @@ class Seq2SeqModel(nn.Module):
             encoder_output: the output of the encoder (unpacked).
                 `(batch_size, source_sequence_length, hidden_dim)`
             (h, c): the tuple of the final hidden state and cell state from the encoder (per
-                sequence in the batch). `((batch_size, hidden_dim), (batch_size, hidden_dim))`
+                sequence in the batch). `((num_layers, batch_size, hidden_dim), (num_layers, batch_size, hidden_dim))`
         """
         # DONE: Implement encode() using the signature, docstring, and comments as guide
         # Hint: familiarize yourself with nn.utils.rnn.pack_padded_sequence and
@@ -199,7 +199,7 @@ class Seq2SeqModel(nn.Module):
 
         Arguments:
             inits: the batch of final hidden and cell states from the encoder.
-                `(batch_size, hidden_dim)` each
+                `(num_layers, batch_size, hidden_dim)` each
             target_embeddings: an embedded batch of target sequences.
                 `(batch_size, target_sequence_length, embedding_dim)`
             target_lengths: the list of lengths of the target sequences
@@ -213,7 +213,7 @@ class Seq2SeqModel(nn.Module):
             output: the batch of decoded output logits.
                 `(batch_size, target_sequence_length, vocab_size)`
             (h, c): the tuple of the final hidden state and cell state from the decoder (per
-                sequence in the batch). `((batch_size, hidden_dim), (batch_size, hidden_dim))`
+                sequence in the batch). `((num_layers, batch_size, hidden_dim), (num_layers, batch_size, hidden_dim))`
         """
         # DONE: Implement decode() using the signature, docstring, and comments as guide
 
