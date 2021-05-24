@@ -9,4 +9,9 @@ python run.py \
     --num_epochs 8 \
     --embedding_dim 16 \
     --hidden_dim 64 \
-    --num_layers 2
+    --num_layers 2 \
+    --temp 4.0
+
+python chrF++.py -nw 0 \
+    -R /dropbox/20-21/575k/data/europarl-v7-es-en/test.es.txt \
+    -H test.en.txt.es > test.en.txt.es.score
