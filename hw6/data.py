@@ -51,7 +51,7 @@ def pad_batch(sequences: list[np.ndarray], padding_index: int) -> np.ndarray:
     for seq in sequences:
         padded_seq = np.pad(seq, (0, max_seq_len - seq.shape[0]), constant_values=padding_index)
         padded_sequences.append(padded_seq)
-    return padded_sequences
+    return np.array(padded_sequences)
 
 
 class SSTClassificationDataset(Dataset):
