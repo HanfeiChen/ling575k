@@ -49,6 +49,6 @@ class PretrainedClassifier(nn.Module):
                               attention_mask=attention_mask,
                               token_type_ids=token_type_ids,
                               return_dict=True)
-        pooler_output = output.pooler_output
-        logits = self.output(pooler_output)
+        last_hidden_state = output.last_hidden_state
+        logits = self.output(last_hidden_state[:, 0, :])
         return logits
