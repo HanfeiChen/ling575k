@@ -33,7 +33,7 @@ class TestSeq2Seq:
             TestSeq2Seq.source, TestSeq2Seq.target, TestSeq2Seq.lengths
         )
         forwarded_gold = torch.load("test_forward.pt")
-        assert torch.equal(forwarded, forwarded_gold)
+        assert torch.allclose(forwarded, forwarded_gold)
 
     def test_encode(self, model):
         embeddings = model.embedding(TestSeq2Seq.source)
@@ -41,11 +41,11 @@ class TestSeq2Seq:
         encoded = model.encode(embeddings, lengths)
         encoded_gold = torch.load("test_encode.pt")
         # check output equal
-        assert torch.equal(encoded[0], encoded_gold[0])
+        assert torch.allclose(encoded[0], encoded_gold[0])
         # check h equal
-        assert torch.equal(encoded[1][0], encoded_gold[1][0])
+        assert torch.allclose(encoded[1][0], encoded_gold[1][0])
         # check c equal
-        assert torch.equal(encoded[1][1], encoded_gold[1][1])
+        assert torch.allclose(encoded[1][1], encoded_gold[1][1])
 
     def test_decode(self, model):
         target_embeddings = model.embedding(TestSeq2Seq.target)
@@ -63,11 +63,11 @@ class TestSeq2Seq:
         )
         decoded_gold = torch.load("test_decode.pt")
         # check output equal
-        assert torch.equal(decoded[0], decoded_gold[0])
+        assert torch.allclose(decoded[0], decoded_gold[0])
         # check h equal
-        assert torch.equal(decoded[1][0], decoded_gold[1][0])
+        assert torch.allclose(decoded[1][0], decoded_gold[1][0])
         # check c equal
-        assert torch.equal(decoded[1][1], decoded_gold[1][1])
+        assert torch.allclose(decoded[1][1], decoded_gold[1][1])
 
     def test_attention(self, model):
         decoded = torch.load("test_decoder_out.pt")
@@ -79,4 +79,4 @@ class TestSeq2Seq:
         ).float()
         attention = model.attention(decoded, encoder_states, padding_mask=attention_mask)
         attention_gold = torch.load("test_attention.pt")
-        assert torch.equal(attention, attention_gold)
+        assert torch.allclose(attention, attention_gold)
